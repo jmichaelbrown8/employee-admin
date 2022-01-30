@@ -1,0 +1,25 @@
+{
+  "name": "employee-admin",
+  "version": "1.0.0",
+  "description": "Employee administration tool that allows you to view and manage the departments, roles, and employees in your company.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmichaelbrown8/employee-admin.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jmichaelbrown8/employee-admin/issues"
+  },
+  "homepage": "https://github.com/jmichaelbrown8/employee-admin#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.3"
+  }
+}
