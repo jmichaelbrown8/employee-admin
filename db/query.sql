@@ -1,9 +1,11 @@
 USE employee_db;
 
-SELECT CONCAT( employee.first_name, ' ', employee.last_name) as name,
+SELECT employee.id,
+       employee.first_name,
+       employee.last_name,
        role.title,
-       role.salary,
        department.name as department,
+       role.salary,
        CONCAT( m.first_name, ' ', m.last_name ) as manager
     FROM employee
     JOIN role ON role.id = employee.role_id
