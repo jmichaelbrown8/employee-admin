@@ -20,6 +20,7 @@ db.query = util.promisify( db.query );
 // Start the menu loop
 menu();
 
+/** Menu function loop to prompt the user for what action they'd like to take */
 async function menu() {
     const { action } = await inquirer.prompt([{
         type: 'list',
@@ -64,6 +65,7 @@ async function menu() {
     menu();
 }
 
+/** View All Departments: (id, name) */
 async function viewAllDepartments() {
     try {
         const results = await db.query('SELECT * FROM department');
@@ -73,9 +75,8 @@ async function viewAllDepartments() {
     }
 }
 
-
+/** View All Roles: (id, title, department, salary) */
 async function viewAllRoles() {
-    // show id, title, department name, salary
     try {
         const results = await db.query(`
             SELECT role.id,
@@ -91,9 +92,8 @@ async function viewAllRoles() {
     }
 }
 
-// view all employees, 
+/** View All Employees: (id, first_name, last_name, title, department, salary, manager) */
 async function viewAllEmployees() {
-    // show id, first_name, last_name, title, department name, salary, manager
     try {
         const results = await db.query(`
             SELECT employee.id,
