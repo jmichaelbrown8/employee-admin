@@ -30,7 +30,14 @@ async function viewAllDepartments() {
 async function viewAllRoles() {
     // show id, title, department name, salary
     try {
-        const results = await db.query('SELECT * FROM role');
+        const results = await db.query(`
+            SELECT role.id,
+                   role.title,
+                   department.name as department,
+                   role.salary
+            FROM role
+            LEFT JOIN department ON department.id = role.department_id;`
+        );
         console.table(results);
     } catch (err) {
         console.error(err);

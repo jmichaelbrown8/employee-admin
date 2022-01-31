@@ -1,5 +1,17 @@
 USE employee_db;
 
+/*
+
+-- Query for view all roles --
+SELECT role.id,
+       role.title,
+       department.name as department,
+       role.salary
+FROM role
+LEFT JOIN department ON department.id = role.department_id;
+
+
+-- Query for view all employees --
 SELECT employee.id,
        employee.first_name,
        employee.last_name,
