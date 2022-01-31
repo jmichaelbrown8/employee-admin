@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const util = require('util');
 const mysql = require('mysql2');
 const cTable = require('console.table');
+const { resolve } = require('path');
 
 // Connect to database
 const db = mysql.createConnection({
@@ -16,7 +17,53 @@ const db = mysql.createConnection({
 // allows db.query to be async
 db.query = util.promisify( db.query );
 
-// view all departments, 
+// Start the menu loop
+menu();
+
+async function menu() {
+    const { action } = await inquirer.prompt([{
+        type: 'list',
+        choices: [
+            'View All Employees',
+            'Add Employee',
+            'Update Employee',
+            'View All Roles',
+            'Add Role',
+            'View All Departments',
+            'Add Department',
+            'Quit'
+        ],
+        message: 'What would you like to do?',
+        name: 'action'
+    }]);
+
+    switch (action) {
+        case 'View All Employees':
+            await viewAllEmployees();
+            break;
+        case 'Add Employee':
+            break;
+        case 'Update Employee':
+            break;
+        case 'View All Roles':
+            await viewAllRoles();
+            break;
+        case 'Add Role':
+            break;
+        case 'View All Departments':
+            await viewAllDepartments();
+            break;
+        case 'Add Department':
+            break;
+        case 'Quit':
+        default:
+            db.end();
+            return null;
+    }
+
+    menu();
+}
+
 async function viewAllDepartments() {
     try {
         const results = await db.query('SELECT * FROM department');
@@ -26,7 +73,7 @@ async function viewAllDepartments() {
     }
 }
 
-// view all roles, 
+
 async function viewAllRoles() {
     // show id, title, department name, salary
     try {
