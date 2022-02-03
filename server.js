@@ -50,6 +50,7 @@ async function menu() {
             await viewAllRoles();
             break;
         case 'Add Role':
+            await addRole();
             break;
         case 'View All Departments':
             await viewAllDepartments();
@@ -138,8 +139,49 @@ async function addDepartment() {
     }
 }
 
-// add a role, 
-function addRole(title, salary, department) {}
+/** Prompts the user for the title, salary, and department of the new role, then adds that to the database. */
+async function addRole() {
+
+    // get department choices from the database
+    let deptChoices = await db.query('SELECT * FROM department');
+
+    // map the id to value (so id is returned from the inquirer.prompt)
+    deptChoices = deptChoices.map(
+        (obj) => { 
+            obj.value = obj.id; 
+            return obj; 
+        }
+    );
+
+    const { title, salary, department_id } = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the title of the new role?',
+            name: 'title'
+        }, {
+            type: 'number',
+            message: 'What is the salary for the role?',
+            name: 'salary'
+        }, {
+            type: 'list',
+            choices: deptChoices,
+            message: 'Which department is this role in?',
+            name: 'department_id'
+        }
+    ]);
+
+    try {
+        await db.query(`
+                INSERT INTO role (title, salary, department_id)
+                    VALUES (?, ?, ?)
+            `, 
+            [title, salary, department_id]
+        );
+        console.log(`Added ${title} to the database`);
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 // add an employee, 
 function addEmployee(firstName, lastName, role, manager) {}
