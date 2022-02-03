@@ -1,11 +1,18 @@
 USE employee_db;
 
 
+
+-- Query for adding new employee --
+INSERT INTO employee ( first_name, last_name, role_id, manager_id )
+    VALUES ( ?, ?, ?, ? )
+
+
+/*
+
 -- Query for adding new role --
 INSERT INTO role (title, salary, department_id)
     VALUES (?, ?, ?)
 
-/*
 
 -- Query for inserting new department --
 INSERT INTO department (name)

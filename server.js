@@ -43,6 +43,7 @@ async function menu() {
             await viewAllEmployees();
             break;
         case 'Add Employee':
+            await addEmployee();
             break;
         case 'Update Employee':
             break;
@@ -183,8 +184,68 @@ async function addRole() {
     }
 }
 
-// add an employee, 
-function addEmployee(firstName, lastName, role, manager) {}
+/** Prompts the user for the employees first name, last name, role, and manager, then adds them to the database */
+async function addEmployee() {
+
+    // get role choices from the database
+    let roleChoices = await db.query('SELECT * FROM role');
+
+    // map the id to value (so id is returned from the inquirer.prompt)
+    roleChoices = roleChoices.map(
+        (obj) => { 
+            obj.value = obj.id; 
+            obj.name = obj.title;
+            return obj; 
+        }
+    );
+
+    // get manager choices from the database
+    let managerChoices = await db.query(`
+        SELECT id, 
+               CONCAT( first_name, ' ', last_name ) as name 
+        FROM employee`
+    );
+
+    // map the id to value (so id is returned from the inquirer.prompt)
+    managerChoices = managerChoices.map(
+        (obj) => { 
+            obj.value = obj.id; 
+            return obj; 
+        }
+    );
+
+    const { first_name, last_name, role_id, manager_id } = await inquirer.prompt([
+        {
+            type: 'input',
+            message: 'What is the employee\'s first name?',
+            name: 'first_name'
+        }, {
+            type: 'input',
+            message: 'What is the employee\'s last name?',
+            name: 'last_name'
+        }, {
+            type: 'list',
+            choices: roleChoices,
+            message: 'What is the employee\'s role?',
+            name: 'role_id'
+        }, {
+            type: 'list',
+            choices: managerChoices,
+            message: 'Who is the employee\'s manager?',
+            name: 'manager_id'
+        }
+    ]);
+
+    try {
+        await db.query(`
+            INSERT INTO employee ( first_name, last_name, role_id, manager_id )
+                VALUES ( ?, ?, ?, ? )
+        `, [first_name, last_name, role_id, manager_id]);
+        console.log(`Added ${first_name} ${last_name} to the database`);
+    } catch (err) {
+        console.log(err);
+    }
+}
 
 // and update an employee role
 function updateEmployee(id, firstName, lastName, role, manager) {}
