@@ -55,6 +55,7 @@ async function menu() {
             await viewAllDepartments();
             break;
         case 'Add Department':
+            await addDepartment();
             break;
         case 'Quit':
         default:
@@ -114,8 +115,28 @@ async function viewAllEmployees() {
     }
 }
 
-// add a department, 
-function addDepartment(name) {}
+/** Prompts the user for a name of the department, then inserts it into the database. */
+async function addDepartment() {
+
+    const { name } = await inquirer.prompt([{
+        type: 'input',
+        message: 'What is the new department name?',
+        name: 'name'
+    }]);
+
+    try {
+        await db.query(`
+            INSERT INTO department (name)
+            VALUES (?)
+            `, 
+            name
+        );
+        console.log(`Added ${name} to the database`);
+        
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 // add a role, 
 function addRole(title, salary, department) {}

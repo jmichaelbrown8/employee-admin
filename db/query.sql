@@ -1,5 +1,9 @@
 USE employee_db;
 
+-- Query for inserting new department --
+INSERT INTO department (name)
+    VALUES ("name")
+
 /*
 
 -- Query for view all roles --
