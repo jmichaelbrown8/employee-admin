@@ -27,7 +27,7 @@ async function menu() {
         choices: [
             'View All Employees',
             'Add Employee',
-            'Update Employee',
+            'Update Employee Role',
             'View All Roles',
             'Add Role',
             'View All Departments',
@@ -45,7 +45,8 @@ async function menu() {
         case 'Add Employee':
             await addEmployee();
             break;
-        case 'Update Employee':
+        case 'Update Employee Role':
+            await updateEmployeeRole();
             break;
         case 'View All Roles':
             await viewAllRoles();
@@ -247,8 +248,47 @@ async function addEmployee() {
     }
 }
 
-// and update an employee role
-function updateEmployee(id, firstName, lastName, role, manager) {}
+/** Prompt for which employee and which role, then update the employee's role in the database. */
+async function updateEmployeeRole() {
+
+    const employees = await db.query(`
+        SELECT id AS value, 
+               CONCAT(first_name, ' ', last_name) AS name
+               FROM employee
+    `);
+    
+    const roles = await db.query(`
+        SELECT id AS value,
+               title AS name
+               FROM role
+    `);
+
+    // prompt for which employee to update, and which role to set
+    const { id, role_id } = await inquirer.prompt([{
+        type: 'list',
+        message: 'Which employee would you like to update?',
+        name: 'id',
+        choices: employees
+    }, {
+        type: 'list',
+        message: 'Which role should be added?',
+        name: 'role_id',
+        choices: roles    
+    }]);
+
+    // update
+    try {
+        await db.query(`
+            UPDATE employee
+                SET role_id = ?
+                WHERE id = ?;
+        `, [role_id, id]);
+        console.log(`Updated employee ${id}`);
+    } catch (err) {
+        console.log(err);
+    }
+
+}
 
 // BONUS 
 

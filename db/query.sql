@@ -2,12 +2,19 @@ USE employee_db;
 
 
 
+-- Query for updating employee role --
+UPDATE employee
+SET role_id = ?
+WHERE id = ?;
+
+
+/*
+
 -- Query for adding new employee --
 INSERT INTO employee ( first_name, last_name, role_id, manager_id )
     VALUES ( ?, ?, ?, ? )
 
 
-/*
 
 -- Query for adding new role --
 INSERT INTO role (title, salary, department_id)
