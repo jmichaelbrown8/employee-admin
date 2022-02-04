@@ -21,4 +21,6 @@ employee-admin is an employee database and administration tool that allows you t
     * (optionally) `source db/seeds.sql` to seed the database with mock employees
 * Run `npm start` to run the application
 
-<iframe src="https://drive.google.com/file/d/1Jc3SBeu0vrJG52QmH1Vd4eRuQfbBGsrY/preview" width="640" height="480" allow="autoplay"></iframe>
+View a video of how the application functions [here](https://drive.google.com/file/d/1Jc3SBeu0vrJG52QmH1Vd4eRuQfbBGsrY/view?usp=sharing)
+
+![Screenshot](./screenshot.png)
