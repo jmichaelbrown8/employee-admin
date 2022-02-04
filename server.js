@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const util = require('util');
 const mysql = require('mysql2');
 const cTable = require('console.table');
-const { resolve } = require('path');
+
 
 // Connect to database
 const db = mysql.createConnection({
@@ -145,15 +145,7 @@ async function addDepartment() {
 async function addRole() {
 
     // get department choices from the database
-    let deptChoices = await db.query('SELECT * FROM department');
-
-    // map the id to value (so id is returned from the inquirer.prompt)
-    deptChoices = deptChoices.map(
-        (obj) => { 
-            obj.value = obj.id; 
-            return obj; 
-        }
-    );
+    let deptChoices = await db.query('SELECT id AS value, name FROM department');
 
     const { title, salary, department_id } = await inquirer.prompt([
         {
@@ -189,30 +181,13 @@ async function addRole() {
 async function addEmployee() {
 
     // get role choices from the database
-    let roleChoices = await db.query('SELECT * FROM role');
-
-    // map the id to value (so id is returned from the inquirer.prompt)
-    roleChoices = roleChoices.map(
-        (obj) => { 
-            obj.value = obj.id; 
-            obj.name = obj.title;
-            return obj; 
-        }
-    );
+    let roleChoices = await db.query('SELECT id AS value, title AS name FROM role');
 
     // get manager choices from the database
     let managerChoices = await db.query(`
-        SELECT id, 
+        SELECT id as value, 
                CONCAT( first_name, ' ', last_name ) as name 
         FROM employee`
-    );
-
-    // map the id to value (so id is returned from the inquirer.prompt)
-    managerChoices = managerChoices.map(
-        (obj) => { 
-            obj.value = obj.id; 
-            return obj; 
-        }
     );
 
     const { first_name, last_name, role_id, manager_id } = await inquirer.prompt([

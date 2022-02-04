@@ -1,5 +1,6 @@
 USE employee_db;
 
+/*
 
 
 -- Query for updating employee role --
@@ -8,7 +9,6 @@ SET role_id = ?
 WHERE id = ?;
 
 
-/*
 
 -- Query for adding new employee --
 INSERT INTO employee ( first_name, last_name, role_id, manager_id )
